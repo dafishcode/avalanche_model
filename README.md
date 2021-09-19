@@ -1,14 +1,36 @@
 # spiking_network_criticality
 Repo for building recurrent neural networks for modelling criticality. 
 
+## What is this repo for?
+* the modelling of cascading avalanche dynamics using recurrent neural networks
+* the simulation of network response properties and dynamics in network models
+* the simulation of small LIF networks in python
 
 
-'admin functions' - functions for ordering and naming data
+## What does this repo contain?
+* Modules contain functions which for network fitting and modeling
+* Accompanying ipynotebooks demonstrate how to use the modules
 
-'cde net ictals' - network simulations for studying the effect of network topology (cycles) on avalance dynamics
 
-'fish net' - network approximations for cellular resolution, meso and macro-scale networks
+### Modules
+'admin_functions.py' - useful administrative functions useful 
 
-'net mod' - generative spiking network to model the role of network topology, network geometry and intrinsic excitability on seizure dynamics - built using scale free and small world networks
+'avalanches.py' - module for calculating avalanche dynamics and critical statistics
 
-'net dyn' - simulating the effect of network topology on the dynamic range of the network
+'IS.py' - module for Bayesian importance sampling approach for loglikelihood ratio testing of power law vs lognormal distribution
+
+'network_mod.py' - module for the generation of network model architectures and simulation of dynamics, and data fitting
+
+'network_stim.py' - module for the running of network perturbations and calculations of netwokr dynamics and response properties
+
+'network.py' - module for the construction of brain networks from empirical data
+
+### Notebooks
+
+'network_mod.ipynb' - notebook for the generation of network model architectures and simulation of dynamics, and data fitting
+
+'network_stim.ipynb' - notebook for the running of network perturbations and calculations of network dynamics and response properties
+
+'LIF_py.ipynb' - notebook for the construction of small networks of LIF neurons in python
+
+'network.ipynb' - notebook for the construction of brain networks from empirical data
