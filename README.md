@@ -27,9 +27,9 @@ Repo for building recurrent neural networks for modelling criticality.
 
 ### Notebooks
 
-'network_mod.ipynb' - notebook for the generation of network model architectures and simulation of dynamics, and data fitting
+'net_mod.ipynb' - notebook for the generation of network model architectures and simulation of dynamics, and data fitting
 
-'network_stim.ipynb' - notebook for the running of network perturbations and calculations of network dynamics and response properties
+'net_stim.ipynb' - notebook for the running of network perturbations and calculations of network dynamics and response properties
 
 'LIF_py.ipynb' - notebook for the construction of small networks of LIF neurons in python
 
