@@ -1,4 +1,4 @@
-# spiking_network_criticality
+# avalanche_model
 Repo for building recurrent neural networks for modelling criticality. 
 
 ## What is this repo for?
