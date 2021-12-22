@@ -399,7 +399,7 @@ class ba_netsim:
         import numpy as np
         self.edge_weight_out = (s + np.exp(-soften/np.exp(r)*distance))/divisor
         return(self)  
-    
+
     #===========================
     def adjmat_generate(self, edge_density, s, r, divisor, soften, mode):
     #===========================
