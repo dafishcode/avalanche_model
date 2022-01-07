@@ -415,29 +415,3 @@ def corrdis_bin(corr, dist, bins):
         bincount+=1
         count+=window
     return(np.vstack((dist_bins, corr_bins)))
-
-#=======================================================================
-def mean_av(curr_l):
-#=======================================================================
-    """
-    This function takes a list of avalanche files and groupseach avalanche distribution
-    into one big distribution.
-    
-    Inputs:
-        curr_l (list): list of files to group together
-        
-    Returns:
-        size_l (list): list of all avalanche sizes from all datasets
-        dur_l (list): list of all avalanche durations from all datasets
-
-    """
-    import numpy as np
-    
-    size_l = []
-    dur_l = []
-    for i in range(len(curr_l)):
-        data = np.load(curr_l[i], allow_pickle=True).item()
-        av = data['av']
-        size_l = np.append(size_l, data['av'][0])
-        dur_l = np.append(dur_l, data['av'][1])
-    return(size_l, dur_l)
