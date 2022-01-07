@@ -1,4 +1,4 @@
-# spiking_network_criticality
+# avalanche_model
 Repo for building recurrent neural networks for modelling criticality. 
 
 ## What is this repo for?
@@ -27,7 +27,7 @@ Repo for building recurrent neural networks for modelling criticality.
 
 ### Notebooks
 
-'net_mod.ipynb' - notebook for the generation of network model architectures and simulation of dynamics, and data fitting
+'net_fit.ipynb' - notebook for the generation of network model architectures and simulation of dynamics, and data fitting
 
 'net_stim.ipynb' - notebook for the running of network perturbations and calculations of network dynamics and response properties
 
