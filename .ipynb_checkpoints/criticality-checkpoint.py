@@ -3,14 +3,15 @@ import IS as isfn
 
 
 #=======================================================================
-def neighbour(coord, n_neigh): 
+def neighbour(coord, n_neigh, dim): 
 #=======================================================================
     """
     This function calculates the nearest n neighbours for each neuron.
     
     Inputs:
-        coord (np array): cells x XYZ coordinates 
+        coord (np array): cells x XYZ coordinates
         n_neigh (int): number of closest neigbours to find
+        dim (np array): 1d vector of floats to convert XYZ coordinates into microns
     
     Returns:
         nnb (np array): cells x cells, with 0s meaning not neighbours and 1s meaning neighbours
@@ -25,6 +26,7 @@ def neighbour(coord, n_neigh):
         
         # Set up nearest neighbour graph
         #---------------------------------------------------------------------------
+    mcs  = np.multiply(coord, dim)     # metrically scaled coordinates (in microns)
         
         # Initialise full distance matrix and nearest neighbour graph (binary) matrix
         #nearest neigh binary matrix of celln by celln storing 
@@ -41,7 +43,7 @@ def neighbour(coord, n_neigh):
             if x == r: 
                 distance[x] = 100000
             else:
-                distance[x] = np.linalg.norm(coord[r]-coord[x]) 
+                distance[x] = np.linalg.norm(mcs[r]-mcs[x]) 
                 
         index = np.argsort(distance)[:n_neigh]
         nnb[r,index] = 1 #binary value defining whether in range or not 
@@ -355,7 +357,7 @@ def branch(pkg, av):
 
 
 #=======================================================================
-def corrdist(corr, dist, n_bins, mini, maxi):
+def corrdis_bin(corr, dist, bins):
 #=======================================================================
     """
     This function calculates the correlation function of a matrix - this is the mean correlation as a function of distance across pairs of neurons. It does this by binning the data by distance and calculating the mean distance per bin. 
@@ -363,21 +365,16 @@ def corrdist(corr, dist, n_bins, mini, maxi):
     Inputs:
         corr (np array): cells x cells, correlation matrix
         dist (np array): cells v cells, distance matrix
-        n_bins (int): number of bins to use
-        mini (int): first bin
-        maxi (int): last bin
+        bins (int): number of bins to use
     
     Returns:
-        output (np array): 2d vector of mean values for distance and correlation across each bin
+        (np array): 2d vector of mean values for distance and correlation across each bin
     """
     
     import numpy as np
     if corr.shape[0] != dist.shape[0]:
         print('Correlation and Distance matrices have unequal cell numbers')
         return()
-    
-    #Define the bins
-    bins = np.linspace(mini, maxi, n_bins) #Majority unused - may need to sort out spacing? 
     
     # Take upper triangular of matrix and flatten into vector
     corr = np.triu(corr, k=0) 
@@ -388,51 +385,33 @@ def corrdist(corr, dist, n_bins, mini, maxi):
     # Convert all negative correlations to 0
     corr_v = [0 if o < 0 else o for o in corr_v]
     corr_v = np.array(corr_v)
-    dist_v[np.where(corr_v == 0)] = 0 #Convert all negativ correlations to 0s in distance matrix
+    dist_v[np.where(corr_v == 0)] = 0
 
     # Order by distances
     unq = np.unique(dist_v)
     dist_vs = np.sort(dist_v)
     corr_vs = np.array([x for _,x in sorted(zip(dist_v,corr_v))])
+    res = len(unq)%bins
+    window = adfn.window(np.int((len(unq[:-res])/bins)), len(unq[:-res]))[0] 
 
-    # Remove all 0 distance values = negative correlations and self-correlation
-    dist_ = dist_vs[len(np.where(dist_vs == 0)[0]):]
-    corr_ = corr_vs[len(np.where(dist_vs == 0)[0]):]
-    
-    #Bin distances
-    bin_ind = np.digitize(dist_, bins)
-    
-    #Loop through each bin and calculate mean correlation
-    output = np.zeros(n_bins), np.zeros(n_bins) 
-    for i in range(len(bins)):
-        output[0][i] =  bins[i]  #Distance bin
+    #Loop through each bin and calculate average distance/correlation
+    count, bincount=0,0
+    dist_bins, corr_bins = np.zeros(np.int(unq.shape[0]/window)),np.zeros(np.int(unq.shape[0]/window))
+    for i in range(np.int(unq.shape[0]/window)):
+        if i == np.int(unq.shape[0]/window)-1:
+            break
+        start = count
+        stop = count+window
+        start_in = np.where(dist_vs == unq[start])[0][0] 
+        stop_in = np.where(dist_vs == unq[stop])[0][0] - 1
 
-        output[1][i] = np.mean(corr_[bin_ind == i])   #Mean correlation
-    
-    return(output)
+        sumd_c = np.sum(corr_vs[start_in:stop_in])
+        div_c = len(np.where(corr_vs[start_in:stop_in] !=0)[0])
+        corr_bins[bincount] = sumd_c/div_c
 
-#=======================================================================
-def mean_av(curr_l):
-#=======================================================================
-    """
-    This function takes a list of avalanche files and groupseach avalanche distribution
-    into one big distribution.
-    
-    Inputs:
-        curr_l (list): list of files to group together
-        
-    Returns:
-        size_l (list): list of all avalanche sizes from all datasets
-        dur_l (list): list of all avalanche durations from all datasets
+        sumd_d = np.sum(dist_vs[start_in:stop_in])
+        dist_bins[bincount] = sumd_d/div_c
 
-    """
-    import numpy as np
-    
-    size_l = []
-    dur_l = []
-    for i in range(len(curr_l)):
-        data = np.load(curr_l[i], allow_pickle=True).item()
-        av = data['av']
-        size_l = np.append(size_l, data['av'][0])
-        dur_l = np.append(dur_l, data['av'][1])
-    return(size_l, dur_l)
+        bincount+=1
+        count+=window
+    return(np.vstack((dist_bins, corr_bins)))
