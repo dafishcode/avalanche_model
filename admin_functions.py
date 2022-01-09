@@ -331,7 +331,7 @@ def save_shared_files(path, son_path, mode):
     Inputs:
     path (string): name of parent path
     son_path (string): name of code folder 
-    mode (string): define which file to save: 'admin', criticality' or 'lce'
+    mode (string): define which file to save: 'admin', 'criticality', 'lce', or 'trace'
     
     """
 
@@ -362,6 +362,10 @@ def save_shared_files(path, son_path, mode):
     if mode == 'lce':
         file_list = return_files(path , son_path, 'LCE.py' ) #search for LCE file in current directory
         path_list = ['empirical_dynamic_modelling', 'seizure_dynamics'] #CHANGE AS NEEDED!
+        
+    if mode == 'trace':
+        file_list = return_files(path , son_path, 'trace_analyse.py' ) #search for trace_analyse file in current directory
+        path_list = ['criticality', 'avalanche_model', 'plasticity_model', 'mutant_analysis'] #CHANGE AS NEEDED!
         
         
     loop_dir(file_list, path_list) 
@@ -530,27 +534,6 @@ def timeprint(per, r, numrows, name):
 #MATHS
 #=============================
 #=============================
-
-#===============================
-def linear_dimensionality(data):
-#===============================
-    """
-    This function calculate the dimensionality as a measure of the equal/unequal weighting across all eigenvalues.
-    
-    Inputs:
-        data (np array): covariance matrix
-        
-    
-    Returns:
-        dim (float): dimensionality
-    
-    """
-    import numpy as np
-    
-    v = np.linalg.eigh(data)[0]
-    dim = (np.sum(v)**2)/np.sum((v**2))
-    
-    return(dim)
 
 
 #=======================================================================================
