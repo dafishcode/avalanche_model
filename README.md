@@ -25,6 +25,9 @@ Repo for building recurrent neural networks for modelling criticality.
 
 'network.py' - module for the construction of brain networks from empirical data
 
+'trace_analyse.py' - module containing classes and functions for the analysis of single cell and population firing statistics
+
+
 ### Notebooks
 
 'net_fit.ipynb' - notebook for the generation of network model architectures and simulation of dynamics, and data fitting
