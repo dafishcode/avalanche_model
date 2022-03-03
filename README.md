@@ -2,7 +2,7 @@
 Repo for building spiking neural networks for modelling avalanche dynamics.  
 
 ## What is this repo for?
-* the modelling of cascading avalanche dynamics using recurrent neural networks
+* the modelling of cascading avalanche dynamics using spiking neural networks
 * the simulation of network response properties and dynamics in network models
 * the simulation of small LIF networks in python
 
