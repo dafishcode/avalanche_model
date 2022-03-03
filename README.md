@@ -1,5 +1,5 @@
 # avalanche_model
-Repo for building recurrent neural networks for modelling criticality. 
+Repo for building recurrent neural networks for modelling avalanche dynamics.  
 
 ## What is this repo for?
 * the modelling of cascading avalanche dynamics using recurrent neural networks
