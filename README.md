@@ -21,7 +21,7 @@ Repo for building spiking neural networks for modelling avalanche dynamics.
 
 'network_mod.py' - module for the generation of network model architectures and simulation of dynamics, and data fitting
 
-'network_stim.py' - module for the running of network perturbations and calculations of netwokr dynamics and response properties
+'network_stim.py' - module for the running of network perturbations and calculations of network dynamics and response properties
 
 'network.py' - module for the construction of brain networks from empirical data
 
